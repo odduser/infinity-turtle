@@ -1,0 +1,20 @@
+local ids = { 'helmet', 'leggings', 'chestplate', 'boots', 'sword', 'shovel', 'bow', 'rotten' }
+
+local iter = 0
+for k,v in ipairs(ids) do
+  print(v)
+  local keepgoing = true
+  while keepgoing do
+    local cmd = "meget "..v.." -1 1"
+    print(cmd)
+    shell.run(cmd)
+    if turtle.getItemCount(1) ~= 0 then
+      turtle.dropDown()
+    else
+      keepgoing = false
+      break
+    end
+    sleep(0.1)
+  end
+  sleep(1)
+end

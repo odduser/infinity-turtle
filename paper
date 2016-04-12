@@ -1,0 +1,8 @@
+while true do
+  turtle.select(6)
+  turtle.placeDown()
+  turtle.select(16)
+  turtle.craft()
+  turtle.dropUp()
+  sleep(0.5)
+end

@@ -1,0 +1,8 @@
+while true do
+  if turtle.getItemCount(1) ~= 0 then
+    repeat
+      sleep(1)
+    until turtle.dropUp()
+  end
+  sleep(1)
+end

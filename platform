@@ -1,0 +1,49 @@
+-- usage: index path
+-- example: index l3fr2u
+
+local args = {...}
+local path = args[1]
+if not path then
+  print("usage: index path")
+  print("example: index l3fr2u")
+else
+  shell.run("go",path)
+  shell.run("odduserdb","front",path,0)
+  shell.run("rev",path)
+end
+root@U31:/media/mc/evolved235/world/computer/3# cat platform
+function findslot()
+  for s=1,16 do
+    if turtle.getItemCount(s) ~=0 then
+      turtle.select(s)
+      break
+    end
+  end
+end
+
+function onerow()
+  for i=1,16 do
+    turtle.forward()
+    findslot()
+    if not turtle.detectDown() then
+      turtle.placeDown()
+    end
+  end
+end
+
+function tworows()
+  onerow()
+  turtle.forward()
+  turtle.turnRight()
+  turtle.forward()
+  turtle.turnRight()
+  onerow()
+  turtle.forward()
+  turtle.turnLeft()
+  turtle.forward()
+  turtle.turnLeft()
+end
+
+for x=1,8 do
+  tworows()
+end

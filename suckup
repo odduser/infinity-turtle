@@ -1,0 +1,4 @@
+while true do
+  turtle.suckUp()
+  sleep(1)
+end

@@ -1,0 +1,41 @@
+local c_side = "front" -- if you are the turtle, which side is the ME Controller on?
+local i_side = "left"  -- if you are the turtle, which side is the ME Interface on?
+local t_dir = "south" -- if you are the ME Interface, which cardinal direction is the turtle from you?
+
+local args = {...}
+local a_id = args[1]
+local a_dmg = tonumber(args[2]) or -1
+local a_qty = tonumber(args[3]) or 1
+
+local c = peripheral.wrap(c_side)
+local i = peripheral.wrap(i_side)
+
+if not i.canExport(t_dir) then
+
+  print("* ME Interface must be on "..i_side)
+
+else
+
+  local m = c.getAvailableItems()
+  local j = 0
+  local got = 0
+
+  for k,v in pairs(m) do
+
+    -- 2.0={is_fluid=false, size=282.0, is_craftable=false, fingerprint={id=minecraft:grass, dmg=0.0}, is_item=true},
+    local item = v['fingerprint']
+
+    if string.find(item['id'], a_id) then
+
+      print(item['id']..' '..item['dmg']..' '..v['size'])
+
+      j = j + 1
+      if j%10 == 0 then
+        sleep(0.000000000001)
+      end
+
+    end
+
+  end
+
+end

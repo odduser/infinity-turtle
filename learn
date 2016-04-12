@@ -1,0 +1,75 @@
+local name = ...
+
+local file = io.open("recipe/"..name, "w")
+
+print('shell.run("make '..name..' ')
+file:write("local count = ... or 1 "..string.char(13))
+file:write("for i=1,count do "..string.char(13))
+file:write('  shell.run("make '..name..' ')
+
+local hash = {}
+local dir = "front"
+
+-- This function drops everything in the turtle
+--  into the inventory in front of it (or on the
+--  ground, I suppose, if there is no chest).
+function dropall()
+    for s=1,16 do
+        if turtle.getItemCount(s) ~= 0 then
+            turtle.select(s)
+            turtle.drop()
+        end
+    end
+    turtle.select(1)
+end
+
+-- This function converts a turtle slot (1-3,5-7,9-11)
+--  into the corresponding crafting slot (1-9)
+function cslot(slot)
+    slot = tonumber(slot)
+    local rslot = slot
+    if slot > 7 then rslot = rslot - 1 end
+    if slot > 4 then rslot = rslot - 1 end
+    return rslot
+end
+
+turtle.select(16)
+turtle.suck()
+
+for s = 1,11 do
+  turtle.select(s)
+  turtle.drop()
+  local chest = peripheral.wrap(dir)
+  local info = chest.getStackInSlot(1)
+  if info then
+    table.insert(hash,info)
+
+    local camelname = string.gsub(info.display_name,"%s","")
+    -- display_name             Ender Pearl
+    -- raw_name         item.enderpearl
+    -- dmg                      0
+    -- max_dmg          0
+    -- qty                      1
+    -- max_size         16
+    -- id                       minecraft:ender_pearl
+
+    local mod, item
+    for k,v in string.gmatch(info.id,"([^:]+):([^:]+)") do
+      mod = k
+      item = v
+      file:write(mod.." "..item.." "..info.dmg.." "..cslot(s).." "..info.qty.." "..camelname.." ")
+      print(mod.." "..item.." "..info.dmg.." "..cslot(s).." "..info.qty.." "..camelname.." ")
+    end
+  end
+  turtle.suck()
+end
+
+file:write('") '..string.char(13))
+file:write('end'..string.char(13))
+file:close()
+
+turtle.select(16)
+turtle.drop()
+dropall()
+
+--// vim: set syntax=lua:

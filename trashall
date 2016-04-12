@@ -1,0 +1,7 @@
+for s=1,16 do
+  if turtle.getItemCount(s) ~=0 then
+    turtle.select(s)
+    turtle.dropDown()
+  end
+end
+turtle.select(1)

@@ -1,0 +1,62 @@
+function find_sand_slot()
+  for s=1,8 do
+    if turtle.getItemCount(s) > 5 then
+      turtle.select(s)
+      return s
+    end
+  end
+end
+
+function find_skull_slot()
+  for s=9,16 do
+    if turtle.getItemCount(s) > 4 then
+      select(s)
+      return s
+    end
+  end
+end
+
+local s
+
+while true do
+
+
+turtle.forward()
+turtle.forward()
+s = find_sand_slot()
+turtle.select(s)
+turtle.place()
+turtle.up()
+turtle.place()
+turtle.turnLeft()
+turtle.forward()
+turtle.turnRight()
+turtle.place()
+turtle.turnRight()
+turtle.forward()
+turtle.forward()
+turtle.turnLeft()
+turtle.place()
+s = find_skull_slot()
+turtle.select(s)
+turtle.up()
+turtle.place()
+turtle.turnLeft()
+turtle.forward()
+turtle.turnRight()
+turtle.place()
+turtle.turnLeft()
+turtle.forward()
+turtle.turnRight()
+turtle.place()
+turtle.turnRight()
+turtle.forward()
+turtle.turnLeft()
+turtle.down()
+turtle.down()
+turtle.back()
+turtle.back()
+
+
+sleep(20)
+end

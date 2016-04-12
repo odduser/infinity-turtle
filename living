@@ -1,0 +1,56 @@
+function findslot()
+  for s=1,8 do
+    if turtle.getItemCount(s) ~= 0 then
+      return s
+    end
+  end
+end
+
+function one(slot)
+  local slot = findslot()
+  turtle.select(9)
+  turtle.digDown()
+  turtle.select(slot)
+  turtle.placeDown()
+end
+
+function collect()
+  one() turtle.forward() -- C6 to C5
+  one() turtle.forward() -- C5 to C4
+  one() turtle.forward() -- C4 to C3
+  one() turtle.forward() -- C3 to C2
+  one() turtle.forward() -- C2 to C1
+  one() turtle.turnLeft() turtle.forward() -- C1 to B1
+  one() turtle.turnLeft() turtle.forward() turtle.forward() -- B1 to B3
+  one() turtle.forward() -- B3 to B4
+  one() turtle.forward() turtle.forward() -- B4 to B6
+  one() turtle.turnRight() turtle.forward() -- B6 to A6
+  one() turtle.turnRight() turtle.forward() -- A6 to A5
+  one() turtle.forward() -- A5 to A4
+  one() turtle.forward() -- A4 to A3
+  one() turtle.forward() -- A3 to A2
+  one() turtle.forward() -- A2 to A1
+  one() turtle.turnLeft() turtle.turnLeft() -- A1 becomes C6
+end
+
+while true do
+  local slot = findslot()
+  -- check to see that we have blocks in slot 1
+  if turtle.getItemCount(slot) >= 16 then
+    turtle.select(slot)
+    -- if there is a block below,
+    if turtle.detectDown() then
+      -- if it doesn't match what is in slot 1,
+      if not turtle.compareDown() then
+        -- do a collection run, placing new blocks down
+        collect()
+        -- wait until the block below changes,
+        while turtle.compareDown() do
+          sleep(5)
+        end
+      end
+    end
+  else
+    print("Need 16 wood or stone in slots 1-8")
+  end
+end

@@ -1,0 +1,122 @@
+--// vim: set syntax=lua sw=4 ts=4 noet:
+
+local echestslot = 1
+local newrodslot = 2
+local oldrodslot = 3
+local quartzslot = 16
+local direction = "south" -- if you are reactor looking at turtle (obscure, huh)
+local maxRods = 7
+
+function doSlot(reactorSlot,oldrodslot,direction)
+        oldrodslot = oldrodslot or 3
+        direction = direction or "south"
+        local reactor = peripheral.wrap("front")
+        local maxItems = 1
+        local turtleSlot = newrodslot
+        local tInfo = reactor.getStackInSlot(reactorSlot)
+        local rod = tInfo.display_name
+        turtle.select(oldrodslot)
+        if ((not tInfo) or (tInfo.dmg == tInfo.max_dmg)) then
+                reactor.pushItem(direction,reactorSlot)
+                reactor.pullItem(direction,turtleSlot,maxItems,reactorSlot)
+        end
+        tInfo = reactor.getStackInSlot(reactorSlot)
+        if (tInfo and tInfo.dmg and tInfo.max_dmg) then
+                local percent = 100 - ( tInfo.dmg / tInfo.max_dmg * 100 )
+                print("#"..reactorSlot.." "..tInfo.name.." "..percent.."% ")
+        return percent or 0
+        else
+                return 0
+        end
+end
+
+function get_rods(echestslot,newrodslot,direction,maxRods)
+        if turtle.getItemCount(newrodslot) < maxRods then
+                turtle.select(echestslot)
+                turtle.place()
+                local chest = peripheral.wrap("front")
+                chest.condenseItems()
+                turtle.select(newrodslot)
+                turtle.drop() -- put new rods back into chest
+                turtle.suck()
+                turtle.select(echestslot)
+                turtle.dig()
+        end
+end
+
+function one_reactor(oldrodslot,direction,maxRods)
+        for i=1,4 do
+                turtle.forward()
+        end
+        turtle.select(quartzslot)
+        turtle.digUp()
+        turtle.up()
+        turtle.up()
+        turtle.placeDown()
+
+        -- 1 17 21 24 38 41 44
+        local a = tonumber(doSlot(1,oldrodslot,direction))
+        local b = tonumber(doSlot(17,oldrodslot,direction))
+        local c = tonumber(doSlot(21,oldrodslot,direction))
+        local d = tonumber(doSlot(24,oldrodslot,direction))
+        local e = tonumber(doSlot(38,oldrodslot,direction))
+        local f = tonumber(doSlot(41,oldrodslot,direction))
+        local g = tonumber(doSlot(44,oldrodslot,direction))
+
+        turtle.select(quartzslot)
+        turtle.digDown()
+        turtle.down()
+        turtle.down()
+        turtle.placeUp()
+
+        local ttl = a + b + c + d + e + f + g
+        local avg = ttl / maxRods
+        -- 200 seconds = 1 percent
+        local etr = math.floor( ( avg * 200 / 60 ) + 1 )
+
+        local msg = avg.."% "..etr.."m "
+        print(msg)
+        return tonumber(etr)
+        -- modem.transmit(47512,46239,msg)
+end
+
+while true do
+        local minetr = 400
+        if turtle.getFuelLevel() < 300 then
+                print("<LowFuelWarningLight>")
+        else
+                for j=1,4 do
+                        for i=1,5 do
+                                get_rods(echestslot,newrodslot,direction,maxRods)
+                                if turtle.getItemCount(newrodslot) >= maxRods then
+                                        local mins = one_reactor(oldrodslot,direction,maxRods)
+                                        if mins < minetr then
+                                                minetr = tonumber(mins)
+                                        end
+                                else
+                                        for i=1,4 do
+                                                turtle.forward()
+                                        end
+                                end
+                        end
+                        for i=1,20 do
+                                turtle.back()
+                        end
+                        if j<4 then
+                                turtle.turnLeft()
+                                for k=1,4 do
+                                        turtle.forward()
+                                end
+                                turtle.turnRight()
+                        else
+                                turtle.turnRight()
+                                for k=1,12 do
+                                        turtle.forward()
+                                end
+                                turtle.turnLeft()
+                        end
+                end
+        end
+        print("Sleeping for "..tonumber(minetr).." minutes.")
+        sleep(60*minetr)
+end

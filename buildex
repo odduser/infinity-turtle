@@ -1,0 +1,158 @@
+-- https://gyazo.com/e4b61072ac27a355651234e83a9d450f
+
+local t=turtle
+
+function a(l,c,r)
+  local t=turtle
+  t.turnLeft()
+  if l<10 then
+    t.select(l)   t.place()
+  end
+  t.turnRight() t.turnRight()
+  if r<10 then
+    t.select(r)   t.place()
+  end
+  t.turnLeft()  t.back()
+  if c<10 then
+    t.select(c)   t.place()
+  end
+end
+
+
+local le=1
+local he=2
+local st=3
+local sc=4
+local ch=5
+local po=6
+local an=7
+local no=16
+
+if turtle.getItemCount(6) ~= 1 then
+  print("Slot Contents")
+  print("  1  9 Light Engineering Blocks")
+  print("  2 13 Heavy Engineering Blocks")
+  print("  3 21 Immer. Eng. Steel Blocks")
+  print("  4 23 Steel Scaffolding")
+  print("  5  1 Chest")
+  print("  6  1 Power")
+  print("  7  1 Anchor (optional)")
+  print(" 16  Empty")
+else
+
+  -- level 1
+  for i=1,5 do t.forward() end
+  t.digDown()
+  t.down()
+  t.digDown()
+  t.select(st)
+  t.placeDown()
+
+  -- level 2
+  t.dig()
+  t.forward()
+  t.dig()
+  t.select(st)
+  t.place()
+  t.back()
+  t.select(sc)
+  t.place()
+  t.turnRight()
+  t.turnRight()
+  t.dig()
+  t.forward()
+  t.dig()
+  t.select(st)
+  t.place()
+  t.back()
+  t.select(sc)
+  t.place()
+  t.turnRight()
+  t.turnRight()
+  t.up()
+  t.placeDown()
+
+
+  -- level 3
+  t.forward()
+  t.select(sc)  t.place()
+
+  a(he,sc,he)
+  a(le,sc,he)
+  a(he,sc,he)
+  a(st,sc,st)
+  a(he,no,le)
+  a(he,st,st)
+
+  t.up()
+  for i=1,5 do t.forward() end
+
+  -- level 4
+  t.forward()   t.forward()
+  t.select(st)  t.place()
+  t.back()
+
+  t.select(sc)  t.place()
+
+  a(le,sc,he)
+  a(le,st,he)
+  a(le,sc,he)
+  a(st,sc,st)
+  a(st,st,le)
+  a(le,he,st)
+
+  t.up()
+  for i=1,5 do t.forward() end
+
+  -- level 5
+  t.forward()
+  t.select(sc)  t.place()
+
+  t.turnRight()
+  t.select(sc)  t.place()
+  t.turnLeft()
+  t.back()
+  t.select(sc)  t.place()
+
+  a(le,sc,sc)
+  a(no,sc,sc)
+  a(st,sc,st)
+  a(he,no,le)
+  a(he,st,st)
+
+  t.up()
+  for i=1,5 do t.forward() end
+
+  -- level 6
+  t.forward()
+  t.select(st)  t.place()
+  t.back()
+  t.select(sc)  t.place()
+  t.back()
+  t.select(sc)  t.place()
+  t.back()
+  t.select(sc)  t.place()
+  t.back()
+  t.select(st)  t.place()
+
+  t.up()
+  for i=1,3 do t.forward() end
+
+  -- level 7
+  t.up()
+  t.select(st)  t.placeDown()
+
+  for i=1,5 do t.back() end
+  for i=1,3 do t.down() end
+  t.select(ch)  t.placeDown()
+  t.turnRight()
+  t.forward()
+  t.select(an)  t.placeDown()
+  t.forward()
+  t.turnLeft()
+  t.forward()
+  t.forward()
+  t.select(po)  t.placeDown()
+
+
+end

@@ -1,0 +1,10 @@
+local slot = ... or 1
+local dir = "front"
+chest = peripheral.wrap(dir)
+slots = chest.getInventorySize()
+local tableInfo = chest.getStackInSlot(slot)
+if tableInfo then
+    for k,v in pairs(tableInfo) do
+        print(k..": "..textutils.serialize(v))
+    end
+end

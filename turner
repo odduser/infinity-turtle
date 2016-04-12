@@ -1,0 +1,21 @@
+for r = 2,7 do
+  for c = 0,7 do
+    if c > 0 then
+      turtle.turnRight()
+      turtle.forward()
+      turtle.turnLeft()
+    end
+    local block = turtle.detect()
+    if not block then turtle.place() end
+    redstone.setOutput("front",true)
+    sleep(0.1)
+    redstone.setOutput("front",false)
+    if not block then turtle.dig() end
+  end
+  turtle.down()
+  turtle.turnLeft()
+  for i = 1,7 do
+    turtle.forward()
+  end
+  turtle.turnRight()
+end
